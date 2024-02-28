@@ -1,10 +1,11 @@
 clear;
+close all;
 clc;
-dt=1E-11;
-t=0:dt:1E-7;
+dt=1E-9;
+t=0:dt:1E-5;
 r1=[0;0;0];
 v1=[0;1E6;1E5];
-bfun=@(x,y,z) [0.*x,0.*y,0.*z+3.2]; %en este caso un campo cte B=3E-4k
+bfun=@(x,y,z) [0.*x,0.*y,0.*z+0.4]; %en este caso un campo cte B=3E-4k
 m=1.6726E-26;
 q=1.6E-19;
 [R,V,A,B]=VBVerlet(r1,v1,bfun,q,m,t);
@@ -16,23 +17,11 @@ xlabel('X','FontSize',16);
 ylabel('Y','FontSize',16);
 zlabel('Z','FontSize',16);
 
-% plot(R(1,:),R(2,:),'b',LineWidth=1.5)
-% axis([-0.4,1.4,-0.6,1.2])
-% axis('equal')
 
-
-% figure(2)
-% axis('equal')
-% hold on
-% for i=1:numel(t)
-%     cla
-%     plot(R(1,1:i),R(2,1:i),'b --',LineWidth=1.1)
-%     plot(R(1,i),R(2,i),'r.',MarkerSize=15)
-%     axis([-0.4,1.4,-0.6,1.2])
-%     
-%     title(['t = ',num2str(t(i),'%.3f'),' s'])
-%     drawnow
-% end
-
-
-
+dx=min([max(R(1,:))-min(R(1,:)),max(R(2,:))-min(R(2,:)),max(R(3,:))-min(R(3,:))])/5;
+xg = min(R(1,:)):dx:max(R(1,:)) ; % Crea un vector de  componentes para las is
+yg = min(R(2,:)):dx:max(R(2,:)) ; % Crea un vector de  componentes para las 2s
+zg = min(R(3,:)):dx:max(R(3,:)) ; % Crea un vector de  componentes para las 3s
+[X,Y,Z] = meshgrid(xg,yg,zg) ; % Construye el mallado 3D
+hold on;
+quiver3(X,Y,Z,X*0,Y*0,Z*0+0.4);
